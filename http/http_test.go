@@ -9,7 +9,7 @@ import (
 
 func TestGet(t *testing.T) {
 	httpClient := httputil.NewClient(httputil.DefaultOptions)
-	r, err := httpClient.Get("https://git.tophant.com/")
+	r, err := httpClient.Get("https://github.com/")
 	assert.True(t, err == nil)
 	assert.True(t, r.StatusCode == http.StatusOK)
 
