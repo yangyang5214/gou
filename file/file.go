@@ -7,7 +7,6 @@ import (
 	"bytes"
 	"crypto/tls"
 	"github.com/pkg/errors"
-	"github.com/yangyang5214/gou/type"
 	"io"
 	"net/http"
 	"os"
@@ -172,8 +171,8 @@ func FileReadLines(path string) *[]string {
 }
 
 // FileReadLinesSet is deduplication data by line
-func FileReadLinesSet(path string) typeutil.Set {
-	s := typeutil.Set{}
+func FileReadLinesSet(path string) map[string]bool {
+	s := map[string]bool{}
 	for _, line := range *FileReadLines(path) {
 		s[line] = true
 	}
