@@ -11,4 +11,7 @@ func Test(t *testing.T) {
 
 	r = GetIpsByDomain("/www.baidu.com/")
 	assert.True(t, len(r) == 0)
+
+	r = GetIpsByDomain("http/www.baidu.com/")
+	assert.True(t, len(r) == 0)
 }
