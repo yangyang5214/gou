@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"crypto/tls"
 	"github.com/pkg/errors"
+	"github.com/yangyang5214/gou/set"
 	"io"
 	"net/http"
 	"os"
@@ -155,11 +156,11 @@ func FileRead(path string) []byte {
 }
 
 // FileReadLines is read file line by line.
-func FileReadLines(path string) *[]string {
+func FileReadLines(path string) []string {
 	var lines []string
 	content := FileRead(path)
 	if len(content) == 0 {
-		return &lines
+		return lines
 	}
 	for _, line := range strings.Split(string(content), "\n") {
 		line = strings.TrimSpace(line)
@@ -167,14 +168,14 @@ func FileReadLines(path string) *[]string {
 			lines = append(lines, line)
 		}
 	}
-	return &lines
+	return lines
 }
 
 // FileReadLinesSet is deduplication data by line
-func FileReadLinesSet(path string) map[string]bool {
-	s := map[string]bool{}
-	for _, line := range *FileReadLines(path) {
-		s[line] = true
+func FileReadLinesSet(path string) *set.Set[string] {
+	s := set.NewSet[string]()
+	for _, line := range FileReadLines(path) {
+		s.Add(line)
 	}
 	return s
 }

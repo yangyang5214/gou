@@ -7,7 +7,7 @@ import (
 func TestFileReadLines(t *testing.T) {
 	r := FileReadLines("/etc/hosts")
 	t.Log(r)
-	t.Log(len(*r))
+	t.Log(len(r))
 }
 
 func TestCountLines(t *testing.T) {
