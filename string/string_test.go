@@ -1,9 +1,10 @@
 package stringutil_test
 
 import (
-	"github.com/stretchr/testify/assert"
-	"github.com/yangyang5214/gou/string"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	stringutil "github.com/yangyang5214/gou/string"
 )
 
 func TestStringToBytes(t *testing.T) {

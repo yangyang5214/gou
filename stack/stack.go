@@ -1,8 +1,9 @@
 package stack
 
 import (
-	"github.com/yangyang5214/gou/list"
 	"sync"
+
+	"github.com/yangyang5214/gou/list"
 )
 
 // Taken from https://stackoverflow.com/a/64641330/9546749

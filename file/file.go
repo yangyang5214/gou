@@ -6,12 +6,13 @@ import (
 	"bufio"
 	"bytes"
 	"crypto/tls"
-	"github.com/pkg/errors"
-	"github.com/yangyang5214/gou/set"
 	"io"
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/pkg/errors"
+	"github.com/yangyang5214/gou/set"
 )
 
 var ErrInvalidSeparator = errors.New("invalid separator")

@@ -1,8 +1,9 @@
 package set
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestName(t *testing.T) {

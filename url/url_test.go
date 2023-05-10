@@ -1,13 +1,15 @@
 package urlutil
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetHtmlTitle(t *testing.T) {
 	assert.Equal(t, GetHtmlTitle("<title>beer</title>"), "beer")
-	assert.Equal(t, GetHtmlTitle("<title>beer"), "")
+	assert.Equal(t, GetHtmlTitle("<title>beer</title>"), "beer")
+	assert.Equal(t, GetHtmlTitle(""), "")
 }
 
 func TestAppendSchema(t *testing.T) {
@@ -29,4 +31,35 @@ func TestGetUrlHost(t *testing.T) {
 	assert.Equal(t, GetUrlHost("baidu.com/111.png?1=1"), "baidu.com")
 	assert.Equal(t, GetUrlHost("www.baidu.com/111.png?1=1"), "www.baidu.com")
 	assert.Equal(t, GetUrlHost("111"), "111")
+}
+
+func TestIsStaticFile(t *testing.T) {
+	type args struct {
+		urlStr string
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			name: "png",
+			args: args{
+				urlStr: "https://www.baidu.com/111.png?1=1",
+			},
+			want: true,
+		},
+		{
+			name: "png with query",
+			args: args{
+				urlStr: "https://www.baidu.com/111.png?1=1",
+			},
+			want: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equalf(t, tt.want, IsStaticFile(tt.args.urlStr), "IsStaticFile(%v)", tt.args.urlStr)
+		})
+	}
 }

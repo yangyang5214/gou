@@ -1,9 +1,10 @@
 package set
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSyncSet(t *testing.T) {

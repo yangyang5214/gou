@@ -15,14 +15,15 @@ const (
 
 // GetHtmlTitle is parse title from html page
 func GetHtmlTitle(html string) string {
-	r, _ := regexp.Compile("<title>([^<]{1,200})</title>")
-	title := r.FindString(html)
-	if title == "" {
+	re, err := regexp.Compile(`<title>(.*?)</title>`)
+	if err != nil {
 		return ""
 	}
-	title = strings.Replace(title, "<title>", "", 1)
-	title = strings.Replace(title, "</title>", "", 1)
-	return title
+	match := re.FindStringSubmatch(html)
+	if len(match) > 1 {
+		return match[1]
+	}
+	return ""
 }
 
 // AppendSchema is add scheme for url
@@ -69,4 +70,34 @@ func GetUrlHost(u string) string {
 		return ""
 	}
 	return urlParsed.Host
+}
+
+func IsStaticFile(urlStr string) bool {
+	parsedURL, err := url.Parse(urlStr)
+	if err != nil {
+		// URL解析错误
+		return false
+	}
+
+	// 获取URL的路径部分
+	path := parsedURL.Path
+
+	// 获取路径中的文件名或路径
+	parts := strings.Split(path, "/")
+	fileName := parts[len(parts)-1]
+
+	// 获取文件扩展名
+	ext := strings.ToLower(fileName[strings.LastIndex(fileName, ".")+1:])
+
+	// 判断扩展名是否为静态文件类型
+	staticFileExtensions := []string{
+		"png", "jpg", "jpeg", "gif", "css", "js", "ico", "svg", "ttf", "woff", "woff2", "eot", "otf", "map", "txt", "html", "htm", "json", "xml",
+	}
+	for _, staticExt := range staticFileExtensions {
+		if ext == staticExt {
+			return true
+		}
+	}
+
+	return false
 }
