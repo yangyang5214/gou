@@ -9,6 +9,8 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path"
+	"path/filepath"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -88,24 +90,26 @@ func DownloadFile(filepath string, url string) error {
 // CopyFile from source to destination
 // https://github.com/projectdiscovery/utils/blob/main/file/file.go#L252
 func CopyFile(src, dst string) error {
-	if !FileExists(src) {
-		return errors.New("source file doesn't exist")
-	}
 	srcFile, err := os.Open(src)
 	if err != nil {
-		return err
+		return errors.WithStack(err)
 	}
 	defer srcFile.Close()
 
+	info, _ := os.Stat(dst)
+	if info != nil && info.IsDir() {
+		dst = filepath.Join(dst, path.Base(src))
+	}
+
 	dstFile, err := os.Create(dst)
 	if err != nil {
-		return err
+		return errors.WithStack(err)
 	}
 	defer dstFile.Close()
 
 	_, err = io.Copy(dstFile, srcFile)
 	if err != nil {
-		return err
+		return errors.WithStack(err)
 	}
 
 	return dstFile.Sync()
@@ -193,7 +197,9 @@ func CountLinesWithSeparator(separator []byte, filename string) (uint, error) {
 		return 0, err
 	}
 
-	defer file.Close()
+	defer func() {
+		_ = file.Close()
+	}()
 	if len(separator) == 0 {
 		return 0, ErrInvalidSeparator
 	}
